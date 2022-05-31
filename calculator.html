@@ -18,12 +18,17 @@
                 justify-content: center;
             }
 
+            .result {
+                text-align: right;
+                margin-right: 5%;
+            }
+
             .calculator-frame {
                 border: 2px solid black;
                 border-radius: 5px;
                 justify-content: center;
-                margin-left: 30%;
-                margin-right: 30%;
+                margin-left: 25%;
+                margin-right: 25%;
                 margin-top: 5%;
                 margin-bottom: 5%;
                 height: 400px;
@@ -35,7 +40,6 @@
                 border-radius: 5px;
                 justify-content: center;
                 margin: 2%;
-                padding: 5%;
                 background-color: whitesmoke;
             }
 
@@ -43,11 +47,13 @@
                 border: 1px solid black;
                 border-radius: 5px;
                 justify-content: center;
-                margin: 2%;
+                margin-bottom: 2%;
+                margin-right: 2%;
+                margin-left: 2%;
                 padding: 5%;
                 width: 400px;
                 max-width: 50%;
-                height: 100%;
+                height: 260px;
             }
         </style>
     </head>
@@ -55,26 +61,56 @@
     <body>
         <div id="calculator-frame" class="calculator-frame">
             <div id="result-display" class="result-display">
-
+                <h3 id="result" class="result"></h3>
             </div>
 
             <div id="buttons" class="flex-rows">
                 <div id="number-buttons" class="button-container">
+                    <div class="flex-columns">
+                        <div class="flex-rows">
+                            <button id="button7" class="number-button">7</button>
+                            <button id="button8" class="number-button">8</button>
+                            <button id="button9" class="number-button">9</button>
+                        </div>
 
+                        <div class="flex-rows">
+                            <button id="button4" class="number-button">4</button>
+                            <button id="button5" class="number-button">5</button>
+                            <button id="button6" class="number-button">6</button>
+                        </div>
+
+                        <div class="flex-rows">
+                            <button id="button1" class="number-button">1</button>
+                            <button id="button2" class="number-button">2</button>
+                            <button id="button3" class="number-button">3</button>
+                        </div>
+
+                        <div class="flex-rows">
+                            <button id="button0" class="number-button">0</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="functions" class="button-container">
                     <div id="operators">
+                        <div class="flex-columns">
+                            <div class="flex-rows">
+                                <button id="button-plus" class="operator-button">+</button>
+                                <button id="button-minus" class="operator-button">-</button>
+                            </div>
+    
+                            <div class="flex-rows">
+                                <button id="button-multiply" class="operator-button">X</button>
+                                <button id="button-divide" class="operator-button">/</button>
+                            </div>   
 
-                    </div>
-
-                    <div id="execute">
-
-                    </div>
-                    
+                            <div class="flex-rows">
+                                <button id="button-submit" class="operator-button">Submit</button>
+                            </div>   
+                        </div>
+                    </div>                    
                 </div>
             </div>
-
         </div>
     </body>
 
