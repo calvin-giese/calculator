@@ -6,6 +6,17 @@
         <title>Calculator</title>
 
         <style>
+            button {
+                background-color:grey;
+                color: white;
+                border: 1px solid white;
+                border-radius: 5px;
+            }
+
+            button:hover {
+                background-color: black;
+            }
+
             .flex-rows {
                 display: flex;
                 flex-direction: row;
@@ -41,6 +52,8 @@
                 justify-content: center;
                 margin: 2%;
                 background-color: whitesmoke;
+                height: 40px;
+                max-height: 10%;
             }
 
             .button-container {
@@ -53,16 +66,14 @@
                 padding: 5%;
                 width: 400px;
                 max-width: 50%;
-                height: 260px;
+                height: 280px;
             }
         </style>
     </head>
 
     <body>
         <div id="calculator-frame" class="calculator-frame">
-            <div id="result-display" class="result-display">
-                <h3 id="result" class="result"></h3>
-            </div>
+            <h3 id="result" class="result-display"></h3>
 
             <div id="buttons" class="flex-rows">
                 <div id="number-buttons" class="button-container">
@@ -100,7 +111,7 @@
                             </div>
     
                             <div class="flex-rows">
-                                <button id="button-multiply" class="operator-button">X</button>
+                                <button id="button-multiply" class="operator-button">x</button>
                                 <button id="button-divide" class="operator-button">/</button>
                             </div>   
 
@@ -116,5 +127,8 @@
 
     <script>
 
+        function calculate () {
+
+        }
     </script>
 </html>
