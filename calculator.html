@@ -9,27 +9,61 @@
             .flex-rows {
                 display: flex;
                 flex-direction: row;
+                justify-content: center;
             }
 
             .flex-columns {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
+            }
+
+            .calculator-frame {
+                border: 2px solid black;
+                border-radius: 5px;
+                justify-content: center;
+                margin-left: 30%;
+                margin-right: 30%;
+                margin-top: 5%;
+                margin-bottom: 5%;
+                height: 400px;
+                background-color: moccasin;
+            }
+
+            .result-display {
+                border: 1px solid black;
+                border-radius: 5px;
+                justify-content: center;
+                margin: 2%;
+                padding: 5%;
+                background-color: whitesmoke;
+            }
+
+            .button-container {
+                border: 1px solid black;
+                border-radius: 5px;
+                justify-content: center;
+                margin: 2%;
+                padding: 5%;
+                width: 400px;
+                max-width: 50%;
+                height: 100%;
             }
         </style>
     </head>
 
     <body>
-        <div id="calculator-frame">
-            <div id="result-display">
+        <div id="calculator-frame" class="calculator-frame">
+            <div id="result-display" class="result-display">
 
             </div>
 
-            <div id="buttons">
-                <div id="number-buttons">
+            <div id="buttons" class="flex-rows">
+                <div id="number-buttons" class="button-container">
 
                 </div>
 
-                <div id="functions">
+                <div id="functions" class="button-container">
                     <div id="operators">
 
                     </div>
