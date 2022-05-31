@@ -54,6 +54,7 @@
                 background-color: whitesmoke;
                 height: 40px;
                 max-height: 10%;
+                text-align: right;
             }
 
             .button-container {
@@ -79,25 +80,25 @@
                 <div id="number-buttons" class="button-container">
                     <div class="flex-columns">
                         <div class="flex-rows">
-                            <button id="button7" class="number-button">7</button>
-                            <button id="button8" class="number-button">8</button>
-                            <button id="button9" class="number-button">9</button>
+                            <button id="button-7" class="number-button">7</button>
+                            <button id="button-8" class="number-button">8</button>
+                            <button id="button-9" class="number-button">9</button>
                         </div>
 
                         <div class="flex-rows">
-                            <button id="button4" class="number-button">4</button>
-                            <button id="button5" class="number-button">5</button>
-                            <button id="button6" class="number-button">6</button>
+                            <button id="button-4" class="number-button">4</button>
+                            <button id="button-5" class="number-button">5</button>
+                            <button id="button-6" class="number-button">6</button>
                         </div>
 
                         <div class="flex-rows">
-                            <button id="button1" class="number-button">1</button>
-                            <button id="button2" class="number-button">2</button>
-                            <button id="button3" class="number-button">3</button>
+                            <button id="button-1" class="number-button">1</button>
+                            <button id="button-2" class="number-button">2</button>
+                            <button id="button-3" class="number-button">3</button>
                         </div>
 
                         <div class="flex-rows">
-                            <button id="button0" class="number-button">0</button>
+                            <button id="button-0" class="number-button">0</button>
                         </div>
                     </div>
                 </div>
@@ -116,6 +117,7 @@
                             </div>   
 
                             <div class="flex-rows">
+                                <button id="button-clear" class="operator-button">Clear</button>
                                 <button id="button-submit" class="operator-button">Submit</button>
                             </div>   
                         </div>
@@ -127,8 +129,75 @@
 
     <script>
 
-        function calculate () {
+        function executeButton (buttonClicked) {
+            let buttonValue = parseButton(buttonClicked);
+            if (buttonIsNumber(buttonValue)) {
+                addDisplayElement(buttonValue);
+            } 
+            else if (buttonIsOperator(buttonValue)) {
+                addDisplayElement(' ' + convertToOperator(buttonValue) + ' ');
+            }
+            else if (buttonIsClear(buttonValue)) {
+                clearResult();
+            } else {
+                calculateResult();
+            }
+        }
+
+        function parseButton (text) {
+            return text.substring(text.indexOf("-") + 1);
+        }
+
+        function buttonIsNumber (buttonValue) {
+            if (!isNaN(parseInt(buttonValue))) {
+                return true;
+            }
+        }
+
+        function buttonIsOperator (buttonValue) {
+            let operators = ['plus', 'minus', 'multiply', 'divide'];
+
+            for (let i = 0; i < operators.length; i++) {
+                if (buttonValue == operators[i]) {
+                    return true;
+                }
+            }
+        }
+
+        function buttonIsClear (value) {
+            if (value == 'clear') {
+                return true;
+            }
+        }
+
+        function addDisplayElement (element) {
+            document.getElementById('result').innerHTML += element;
+        }
+
+        function convertToOperator (operator) {
+            let operators = ['plus', 'minus', 'multiply', 'divide'];
+            let convertedOperators = ['+', '-', 'x', '/']
+
+            for (let i = 0; i < operators.length; i++) {
+                if (operator == operators[i]) {
+                    return convertedOperators[i];
+                }
+            }
+        }
+
+        function calculateResult () {
 
         }
+
+        function clearResult () {
+            document.getElementById('result').innerHTML = '';
+        }
+
+        let buttons = document.querySelectorAll('button');
+        buttons.forEach(function (i) {
+            i.addEventListener('click', function() {
+                let result = executeButton(i.id);
+            });
+        });
     </script>
 </html>
