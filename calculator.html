@@ -11,6 +11,8 @@
                 color: white;
                 border: 1px solid white;
                 border-radius: 5px;
+                margin: 5px;
+                padding: 10%;
             }
 
             button:hover {
@@ -131,11 +133,11 @@
 
         function executeButton (buttonClicked) {
             let buttonValue = parseButton(buttonClicked);
-            if (buttonIsNumber(buttonValue)) {
+            if (elementIsNumber(buttonValue)) {
                 addDisplayElement(buttonValue);
             } 
-            else if (buttonIsOperator(buttonValue)) {
-                addDisplayElement(' ' + convertToOperator(buttonValue) + ' ');
+            else if (elementIsOperator(buttonValue)) {
+                addDisplayElement(convertToOperator(buttonValue));
             }
             else if (buttonIsClear(buttonValue)) {
                 clearResult();
@@ -148,30 +150,46 @@
             return text.substring(text.indexOf("-") + 1);
         }
 
-        function buttonIsNumber (buttonValue) {
-            if (!isNaN(parseInt(buttonValue))) {
+        function elementIsNumber (value) {
+            if (!isNaN(parseInt(value))) {
                 return true;
             }
         }
 
-        function buttonIsOperator (buttonValue) {
+        function elementIsOperator (value) {
             let operators = ['plus', 'minus', 'multiply', 'divide'];
 
             for (let i = 0; i < operators.length; i++) {
-                if (buttonValue == operators[i]) {
+                if (value == operators[i]) {
                     return true;
                 }
             }
         }
 
-        function buttonIsClear (value) {
+        function elementIsClear (value) {
             if (value == 'clear') {
                 return true;
             }
         }
 
         function addDisplayElement (element) {
-            document.getElementById('result').innerHTML += element;
+            if (elementCanBeAdded(element)) {
+                document.getElementById('result').innerHTML += element;
+            }
+        }
+
+        function elementCanBeAdded (element) {
+            let currentResult = document.getElementById('result').innerHTML;
+
+            if (currentResult == '') {
+                return true;
+            } 
+            else if (lastEntryWasNumber(currentResult) && elementIsOperator(element)) {
+                return true;
+            }
+            else if (lastEntryWasOperator(currentResult) && elementIsNumber(element)) {
+                return true;
+            }
         }
 
         function convertToOperator (operator) {
@@ -187,6 +205,30 @@
 
         function calculateResult () {
 
+        }
+
+        function lastEntryWasNumber (currentResult) {
+            let lastEntry = getLastEntry(currentResult);
+            if (elementIsNumber(lastEntry)) {
+                return true;
+            }
+        }
+
+        function lastEntryWasOperator (currentResult) {
+            let lastEntry = getLastEntry(currentResult);
+            if (elementIsOperator(lastEntry)) {
+                return true;
+            }
+        }
+
+        function getLastEntry(text) {
+            let operators = ['plus', 'minus', 'multiply', 'divide'];
+
+            for (let i = 0; i < operators.length; i++) {
+                if (text[text.length - 1] == operators[i]) {
+                    return text[text.length - 1];
+                }
+            }
         }
 
         function clearResult () {
