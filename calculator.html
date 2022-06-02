@@ -141,6 +141,7 @@
                             </div>   
 
                             <div class="flex-rows">
+                                <button id="button-delete" class="operator-button delete-button">Delete</button>
                                 <button id="button-clear" class="operator-button clear-button">Clear</button>
                                 <button id="button-submit" class="operator-button submit-button">Submit</button>
                             </div>   
@@ -170,6 +171,9 @@
             } 
             else if (elementIsOperator(buttonValue)) {
                 addDisplayElement(convertToOperator(buttonValue));
+            }
+            else if (elementIsDelete(buttonValue)) {
+                deleteLastElement();
             }
             else if (elementIsClear(buttonValue)) {
                 clearResult();
@@ -214,9 +218,7 @@
             let currentResult = document.getElementById('result').innerHTML;
 
             if (currentResult == '' && elementIsNumber(element)) {
-                return true;
-            }
-            else if (calculationCantBeCompleted(currentResult)) {
+                console.log('helloo')
                 return true;
             }
             else if (isFirstEntry(currentResult) && elementIsNumber(element)) {
@@ -291,7 +293,25 @@
                 return parseInt(numberAsString);
             }            
         }
+
+        function elementIsDelete (value) {
+            if (value == 'delete') {
+                return true;
+            }
+        }
         
+        function deleteLastElement() {
+            let currentValue = document.getElementById('result').innerHTML;
+            let temp = '';
+
+            for (let i = 0; i < currentValue.length - 1; i++) {
+                temp += currentValue[i];
+            }
+
+            document.getElementById('result').innerHTML = temp;
+        }
+
+
         function elementIsClear (value) {
             if (value == 'clear') {
                 return true;
