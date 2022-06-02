@@ -137,6 +137,13 @@
         var operators = ['plus', 'minus', 'multiply', 'divide'];
         var convertedOperators = ['+', '-', 'x', '/']
 
+        let buttons = document.querySelectorAll('button');
+        buttons.forEach(function (i) {
+            i.addEventListener('click', function() {
+                let result = executeButton(i.id);
+            });
+        });
+
         function executeButton (buttonClicked) {
             let buttonValue = parseButton(buttonClicked);
 
@@ -150,6 +157,32 @@
                 clearResult();
             } else if (elementIsSubmit(buttonValue)) {
                 calculateResult();
+            }
+        }
+           
+        function parseButton (text) {
+            return text.substring(text.indexOf("-") + 1);
+        }    
+
+        function convertToOperator (operator) {
+            for (let i = 0; i < operators.length; i++) {
+                if (operator == operators[i]) {
+                    return convertedOperators[i];
+                }
+            }
+        }
+
+        function elementIsNumber (value) {
+            if (!isNaN(parseInt(value))) {
+                return true;
+            }
+        }
+
+        function elementIsOperator (value) {
+            for (let i = 0; i < operators.length; i++) {
+                if (value == operators[i] || value == convertedOperators[i]) {
+                    return true;
+                }
             }
         }
 
@@ -198,36 +231,6 @@
 
             return noOperatorPresent;
         }
-
-        function convertToOperator (operator) {
-            for (let i = 0; i < operators.length; i++) {
-                if (operator == operators[i]) {
-                    return convertedOperators[i];
-                }
-            }
-        }
-
-        function calculateResult () {
-            let currentResult = document.getElementById('result').innerHTML;
-            let firstValue = getFirstEntry(currentResult);
-            let operator = getTheOperator(currentResult);
-            let secondValue = getLastEntry(currentResult);
-
-            if (!calculationCantBeCompleted(currentResult)) {      
-                if (operator == convertedOperators[0]) {
-                    document.getElementById('result').innerHTML = add(firstValue, secondValue);
-                } 
-                else if (operator == convertedOperators[1]) {
-                    document.getElementById('result').innerHTML = subtract(firstValue, secondValue);
-                } 
-                else if (operator == convertedOperators[2]) {
-                    document.getElementById('result').innerHTML = multiply(firstValue, secondValue);
-                } 
-                else if (operator == convertedOperators[3]) {
-                    document.getElementById('result').innerHTML = divide(firstValue, secondValue);
-                } 
-            }
-        }
         
         function getFirstEntry(text) {
             let numberAsString = '';
@@ -270,6 +273,44 @@
                 return parseInt(numberAsString);
             }            
         }
+        
+        function elementIsClear (value) {
+            if (value == 'clear') {
+                return true;
+            }
+        }
+        
+        function clearResult () {
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function elementIsSubmit (value) {
+            if (value == 'submit') {
+                return true;
+            }
+        }
+        
+        function calculateResult () {
+            let currentResult = document.getElementById('result').innerHTML;
+            let firstValue = getFirstEntry(currentResult);
+            let operator = getTheOperator(currentResult);
+            let secondValue = getLastEntry(currentResult);
+
+            if (!calculationCantBeCompleted(currentResult)) {      
+                if (operator == convertedOperators[0]) {
+                    document.getElementById('result').innerHTML = add(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[1]) {
+                    document.getElementById('result').innerHTML = subtract(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[2]) {
+                    document.getElementById('result').innerHTML = multiply(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[3]) {
+                    document.getElementById('result').innerHTML = divide(firstValue, secondValue);
+                } 
+            }
+        }
 
         function invertValue (value) {
             let temp = '';
@@ -287,40 +328,6 @@
 
         function lastEntryWasOperator (currentResult) {
             return elementIsOperator(getLastEntry(currentResult));
-        }
-
-        function parseButton (text) {
-            return text.substring(text.indexOf("-") + 1);
-        }
-
-        function elementIsNumber (value) {
-            if (!isNaN(parseInt(value))) {
-                return true;
-            }
-        }
-
-        function elementIsOperator (value) {
-            for (let i = 0; i < operators.length; i++) {
-                if (value == operators[i] || value == convertedOperators[i]) {
-                    return true;
-                }
-            }
-        }
-
-        function elementIsClear (value) {
-            if (value == 'clear') {
-                return true;
-            }
-        }
-        
-        function elementIsSubmit (value) {
-            if (value == 'submit') {
-                return true;
-            }
-        }
-
-        function clearResult () {
-            document.getElementById('result').innerHTML = '';
         }
 
         function add (a, b) {
@@ -342,12 +349,5 @@
                 return a / b;
             }            
         }
-
-        let buttons = document.querySelectorAll('button');
-        buttons.forEach(function (i) {
-            i.addEventListener('click', function() {
-                let result = executeButton(i.id);
-            });
-        });
     </script>
 </html>
