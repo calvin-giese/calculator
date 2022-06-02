@@ -165,8 +165,8 @@
             if (currentResult == '' && elementIsNumber(element)) {
                 return true;
             }
-            else if (calculationCanBeCompleted(currentResult)) {
-                return false;
+            else if (calculationCantBeCompleted(currentResult)) {
+                return true;
             }
             else if (isFirstEntry(currentResult) && elementIsNumber(element)) {
                 return true;
@@ -179,8 +179,12 @@
             }
         }
 
-        function calculationCanBeCompleted (value) {
-            return false;
+        function calculationCantBeCompleted (value) {
+            if (elementIsNumber(getFirstEntry(value)) && elementIsOperator(getTheOperator(value)) && elementIsNumber(getLastEntry(value))) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         function isFirstEntry (value) {
@@ -208,48 +212,23 @@
             let firstValue = getFirstEntry(currentResult);
             let operator = getTheOperator(currentResult);
             let secondValue = getLastEntry(currentResult);
-            
-            if (operator == convertedOperators[0]) {
-                document.getElementById('result').innerHTML = add(firstValue, secondValue);
-            } 
-            else if (operator == convertedOperators[1]) {
-                document.getElementById('result').innerHTML = subtract(firstValue, secondValue);
-            } 
-            else if (operator == convertedOperators[2]) {
-                document.getElementById('result').innerHTML = multiply(firstValue, secondValue);
-            } 
-            else if (operator == convertedOperators[3]) {
-                document.getElementById('result').innerHTML = divide(firstValue, secondValue);
-            } 
-        }
 
-        function lastEntryWasNumber (currentResult) {
-            return elementIsNumber(getLastEntry(currentResult));
-        }
-
-        function lastEntryWasOperator (currentResult) {
-            return elementIsOperator(getLastEntry(currentResult));
-        }
-
-        function getLastEntry(text) {
-            if (elementIsOperator(text[text.length - 1])) {
-                return text[text.length - 1];
+            if (!calculationCantBeCompleted(currentResult)) {      
+                if (operator == convertedOperators[0]) {
+                    document.getElementById('result').innerHTML = add(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[1]) {
+                    document.getElementById('result').innerHTML = subtract(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[2]) {
+                    document.getElementById('result').innerHTML = multiply(firstValue, secondValue);
+                } 
+                else if (operator == convertedOperators[3]) {
+                    document.getElementById('result').innerHTML = divide(firstValue, secondValue);
+                } 
             }
-            else {
-                let numberAsString = '';
-
-                for (let i = text.length - 1; i >= 0; i--) {
-                    if (elementIsNumber(text[i])) {
-                        numberAsString += text[i];
-                    } else {
-                        return parseInt(numberAsString);
-                    }
-                }
-
-                return parseInt(numberAsString);
-            }            
         }
-
+        
         function getFirstEntry(text) {
             let numberAsString = '';
 
@@ -270,6 +249,44 @@
                     return text[i];
                 }
             }
+        }
+
+        function getLastEntry(text) {
+            if (elementIsOperator(text[text.length - 1])) {
+                return text[text.length - 1];
+            }
+            else {
+                let numberAsString = '';
+
+                for (let i = text.length - 1; i >= 0; i--) {
+                    if (elementIsNumber(text[i])) {
+                        numberAsString += text[i];
+                    } else {
+                        numberAsString = invertValue(numberAsString);
+                        return parseInt(numberAsString);
+                    }
+                }
+
+                return parseInt(numberAsString);
+            }            
+        }
+
+        function invertValue (value) {
+            let temp = '';
+
+            for (let i = value.length - 1; i >= 0; i--) {
+                temp += value[i];
+            }
+
+            return temp;
+        }
+
+        function lastEntryWasNumber (currentResult) {
+            return elementIsNumber(getLastEntry(currentResult));
+        }
+
+        function lastEntryWasOperator (currentResult) {
+            return elementIsOperator(getLastEntry(currentResult));
         }
 
         function parseButton (text) {
