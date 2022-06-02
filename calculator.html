@@ -12,7 +12,7 @@
                 border: 1px solid white;
                 border-radius: 5px;
                 margin: 5px;
-                padding: 10%;
+                padding: 8%;
             }
 
             button:hover {
@@ -23,12 +23,16 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
+                max-height: 100%;
+                max-width: 100%;
             }
 
             .flex-columns {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                max-height: 100%;
+                max-width: 100%;
             }
 
             .result {
@@ -69,7 +73,7 @@
                 padding: 5%;
                 width: 400px;
                 max-width: 50%;
-                height: 280px;
+                height: 240px;
             }
         </style>
     </head>
@@ -130,19 +134,141 @@
     </body>
 
     <script>
+        var operators = ['plus', 'minus', 'multiply', 'divide'];
+        var convertedOperators = ['+', '-', 'x', '/']
 
         function executeButton (buttonClicked) {
             let buttonValue = parseButton(buttonClicked);
+
             if (elementIsNumber(buttonValue)) {
                 addDisplayElement(buttonValue);
             } 
             else if (elementIsOperator(buttonValue)) {
                 addDisplayElement(convertToOperator(buttonValue));
             }
-            else if (buttonIsClear(buttonValue)) {
+            else if (elementIsClear(buttonValue)) {
                 clearResult();
-            } else {
+            } else if (elementIsSubmit(buttonValue)) {
                 calculateResult();
+            }
+        }
+
+        function addDisplayElement (element) {
+            if (elementCanBeAdded(element)) {
+                document.getElementById('result').innerHTML += element;
+            }
+        }
+
+        function elementCanBeAdded (element) {
+            let currentResult = document.getElementById('result').innerHTML;
+
+            if (currentResult == '' && elementIsNumber(element)) {
+                return true;
+            }
+            else if (calculationCanBeCompleted(currentResult)) {
+                return false;
+            }
+            else if (isFirstEntry(currentResult) && elementIsNumber(element)) {
+                return true;
+            } 
+            else if (lastEntryWasNumber(currentResult)) {
+                return true;
+            }
+            else if (lastEntryWasOperator(currentResult) && elementIsNumber(element)) {
+                return true;
+            }
+        }
+
+        function calculationCanBeCompleted (value) {
+            return false;
+        }
+
+        function isFirstEntry (value) {
+            let noOperatorPresent = true;
+
+            for (let i = 0; i < value.length; i++) {
+                if (elementIsOperator(value[i])) {
+                    noOperatorPresent = false;
+                }
+            }
+
+            return noOperatorPresent;
+        }
+
+        function convertToOperator (operator) {
+            for (let i = 0; i < operators.length; i++) {
+                if (operator == operators[i]) {
+                    return convertedOperators[i];
+                }
+            }
+        }
+
+        function calculateResult () {
+            let currentResult = document.getElementById('result').innerHTML;
+            let firstValue = getFirstEntry(currentResult);
+            let operator = getTheOperator(currentResult);
+            let secondValue = getLastEntry(currentResult);
+            
+            if (operator == convertedOperators[0]) {
+                document.getElementById('result').innerHTML = add(firstValue, secondValue);
+            } 
+            else if (operator == convertedOperators[1]) {
+                document.getElementById('result').innerHTML = subtract(firstValue, secondValue);
+            } 
+            else if (operator == convertedOperators[2]) {
+                document.getElementById('result').innerHTML = multiply(firstValue, secondValue);
+            } 
+            else if (operator == convertedOperators[3]) {
+                document.getElementById('result').innerHTML = divide(firstValue, secondValue);
+            } 
+        }
+
+        function lastEntryWasNumber (currentResult) {
+            return elementIsNumber(getLastEntry(currentResult));
+        }
+
+        function lastEntryWasOperator (currentResult) {
+            return elementIsOperator(getLastEntry(currentResult));
+        }
+
+        function getLastEntry(text) {
+            if (elementIsOperator(text[text.length - 1])) {
+                return text[text.length - 1];
+            }
+            else {
+                let numberAsString = '';
+
+                for (let i = text.length - 1; i >= 0; i--) {
+                    if (elementIsNumber(text[i])) {
+                        numberAsString += text[i];
+                    } else {
+                        return parseInt(numberAsString);
+                    }
+                }
+
+                return parseInt(numberAsString);
+            }            
+        }
+
+        function getFirstEntry(text) {
+            let numberAsString = '';
+
+            for (let i = 0; i < text.length; i++) {
+                if (elementIsNumber(text[i])) {
+                    numberAsString += text[i];
+                } else {
+                    return parseInt(numberAsString);
+                }
+            }
+
+            return parseInt(numberAsString);          
+        }
+
+        function getTheOperator(text) {
+            for (let i = 0; i < text.length; i++) {
+                if (elementIsOperator(text[i])) {
+                    return text[i];
+                }
             }
         }
 
@@ -157,10 +283,8 @@
         }
 
         function elementIsOperator (value) {
-            let operators = ['plus', 'minus', 'multiply', 'divide'];
-
             for (let i = 0; i < operators.length; i++) {
-                if (value == operators[i]) {
+                if (value == operators[i] || value == convertedOperators[i]) {
                     return true;
                 }
             }
@@ -171,68 +295,35 @@
                 return true;
             }
         }
-
-        function addDisplayElement (element) {
-            if (elementCanBeAdded(element)) {
-                document.getElementById('result').innerHTML += element;
-            }
-        }
-
-        function elementCanBeAdded (element) {
-            let currentResult = document.getElementById('result').innerHTML;
-
-            if (currentResult == '') {
+        
+        function elementIsSubmit (value) {
+            if (value == 'submit') {
                 return true;
-            } 
-            else if (lastEntryWasNumber(currentResult) && elementIsOperator(element)) {
-                return true;
-            }
-            else if (lastEntryWasOperator(currentResult) && elementIsNumber(element)) {
-                return true;
-            }
-        }
-
-        function convertToOperator (operator) {
-            let operators = ['plus', 'minus', 'multiply', 'divide'];
-            let convertedOperators = ['+', '-', 'x', '/']
-
-            for (let i = 0; i < operators.length; i++) {
-                if (operator == operators[i]) {
-                    return convertedOperators[i];
-                }
-            }
-        }
-
-        function calculateResult () {
-
-        }
-
-        function lastEntryWasNumber (currentResult) {
-            let lastEntry = getLastEntry(currentResult);
-            if (elementIsNumber(lastEntry)) {
-                return true;
-            }
-        }
-
-        function lastEntryWasOperator (currentResult) {
-            let lastEntry = getLastEntry(currentResult);
-            if (elementIsOperator(lastEntry)) {
-                return true;
-            }
-        }
-
-        function getLastEntry(text) {
-            let operators = ['plus', 'minus', 'multiply', 'divide'];
-
-            for (let i = 0; i < operators.length; i++) {
-                if (text[text.length - 1] == operators[i]) {
-                    return text[text.length - 1];
-                }
             }
         }
 
         function clearResult () {
             document.getElementById('result').innerHTML = '';
+        }
+
+        function add (a, b) {
+            return a + b;
+        }
+
+        function subtract (a, b) {
+            return a - b;
+        }
+
+        function multiply (a, b) {
+            return a * b;
+        }
+
+        function divide (a, b) {
+            if (b == 0) {
+                return Infinity;
+            } else {
+                return a / b;
+            }            
         }
 
         let buttons = document.querySelectorAll('button');
